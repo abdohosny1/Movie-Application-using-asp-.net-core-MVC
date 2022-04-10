@@ -7,30 +7,69 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Movie_Application.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Movie_Application</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Movie" asp-action="Index">Movie App</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-controller="Movie" asp-action="Index" >
+                                <i class="badge-info bi-film"></i>Movies</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
+                        @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                                 <li class="nav-item dropdown">
+                            <button class="btn btn-light dropdown-toggle"
+                            type="button" id="navbarDropdown" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                             <i class="bi bi-gear" ></i>Management
+                             </button>
+
+                              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" asp-controller="Cinema" asp-action="Index"><i class="bi bi-camera-reels"></i> Cinemas</a>
+                                        <a class="dropdown-item" asp-controller="Producers" asp-action="Index"><i class="bi bi-headset"></i> Producers</a>
+                                        <a class="dropdown-item" asp-controller="Actor" asp-action="Index"><i class="bi bi-person-square"></i> Actors</a>
+                                    </div>
+                        </li> 
+                            
+                        }
+                                             
+
+                       
                     </ul>
+                      <form class="my-2 my-lg-0" asp-controller="Movie" asp-action="Filter"
+                        style="padding-right: 25px; flex-direction:row;">
+
+                        <input name="searchString" type="text"  placeholder="Search for a movie..."
+                               aria-label="Recipient's username" aria-describedby="button-addon2">
+                      <button class="btn btn-outline-success " type="submit"><i class="bi bi-search"></i></button>
+                    </form>
+                      <ul class="navbar-nav">
+@*                        @await Component.InvokeAsync("ShoppingCartViewComponent")
+*@                    </ul>
+           
+
+
+
+                    <partial name="IdentityView.cshtml" />
+           
+   
                 </div>
+                  
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
